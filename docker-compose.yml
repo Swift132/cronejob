@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+
+  cronetab:
+    build: .
+    container_name: cronetab
+    volumes:
+      - ./data1:/data1
+      - ./data2:/data2
+      - ./data:/data

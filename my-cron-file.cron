@@ -1,0 +1,2 @@
+*/5 * * * * root cp -R /data/data1 /data/data1
+*/5 * * * * root cp -R /data/data2 /data/data2
