@@ -5,8 +5,6 @@ Este é um projeto que consiste em criar um contêiner Docker para executar back
 
 ## Requisitos
 
-Certifique-se de ter os seguintes requisitos instalados em sua máquina:
-
 - Docker
 
 ## Instruções
