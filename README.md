@@ -16,4 +16,4 @@ Siga as instruções abaixo para configurar e executar o projeto:
 1. Clone o repositório:
 
    ```shell
-   git clone <URL_DO_REPOSITÓRIO>
+   git clone git@github.com:Swift132/cronejob.git
