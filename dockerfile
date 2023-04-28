@@ -10,7 +10,7 @@ COPY date-script.sh .
 # Giving executable permission to the script file
 RUN chmod +x date-script.sh
 
-# Adding crontab to the appropriate location
+# Adding crontab information to the appropriate location
 RUN echo "*/1 * * * * root cp -R /data1 /data/\n*/1 * * * * root cp -R /data2 /data" > /etc/cron.d/my-cron-file
 
 # Giving permission to crontab file

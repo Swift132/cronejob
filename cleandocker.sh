@@ -1,64 +1,111 @@
 #/bin/bash
-# Script do delete containers, images and volumes
-# 2022 - By: Paulo Leite
-# NOTE:if you have figlet installer uncommentline 7 and coment line 8
+# Script Limpeza do Docker
+# 2023 - By: Diogo Pacheco
+
+options=("1" "2" "3" "4" "5" "6")
+selected=()
 
 clear
-#figlet "cleaning docker"
-echo "Cleaning docker ecosystem" \ echo "===================================================="
+# Função para eliminar tudo
+eliminar_tudo() {
+  eliminar_containers
+  eliminar_images
+  eliminar_volumes
+  eliminar_networks
+}
 
-#check if there are runnig containers to stop
-if [ $( docker ps -q | wc -l ) -gt 0 ]; then
-  # Stop containers
-  echo "Stoping containers"
-  docker stop $(docker ps -q)
-  echo "Containers stoped!"
+# Função para eliminar containers
+eliminar_containers() {
+  if [ $(docker ps -aq | wc -l) -gt 0 ]; then
+    echo "Deleting containers"
+    docker rm $(docker ps -aq)
+    echo -e "\e[32mContainers Deleted\e[0m"
   else
-  # there are no runnnig containers 
-  echo "There are no containers to STOP"
-fi
+    echo -e "\e[31mThere are no containers to delete!\e[0m"
+  fi
+}
 
-#check if there are stop continers to delete
-if [ $( docker ps -aq | wc -l ) -gt 0 ]; then
-  # Delete stoped cotainers
-  echo "Deleting containers"
-  docker rm $(docker ps -aq)
-  echo "Containers deleted!"
+# Função para eliminar imagens
+eliminar_images() {
+  if [ $(docker image ls -q | wc -l) -gt 0 ]; then
+    echo "Deleting images"
+    docker rmi -f $(docker image ls -q)
+    echo -e "\e[32mImages Deleted!\e[0m"
   else
-  # there are no containers to remove
-  echo "There are no Containers to Delete!"
-fi
+    echo -e "\e[31mThere are no images to delete!\e[0m"
+  fi
+}
 
-#check if there are images
-if [ $( docker image ls -q | wc -l ) -gt 0 ]; then
-  echo "Delete images"
-  docker rmi -f $(docker image ls -q)
-  echo "Images deleted!"
+# Função para eliminar volumes
+eliminar_volumes() {
+  if [ $(docker volume ls -q | wc -l) -gt 0 ]; then
+    echo "Deleting volumes"
+    docker volume remove -f $(docker volume ls -q)
+    echo -e "\e[32mVolumes Deleted!\e[0m"
   else
-  # there are no images
-  echo "There are no images to remove"
-fi
+    echo -e "\e[31mThere are no volumes to delete\e[0m"
+  fi
+}
 
-#check if there are volumes
-if [ $( docker volume ls -q | wc -l ) -gt 0 ]; then
-  echo "Delete volumes"
-  docker volume remove -f $(docker volume ls -q)
-  echo "Volumes deleted!"
+# Função para eliminar networks
+eliminar_networks() {
+  if [ $(docker network ls -q | wc -l) -gt 0 ]; then
+    echo "Deleting networks"
+    docker network rm $(docker network ls -q)
+    echo "Networks deleted!"
   else
-  # there are no images
-  echo "There are no volumes to remove"
-fi
+    echo "There are no networks to delete!"
+    echo -e "\e[31mThere are no networks to delete!\e[0m"
+  fi
+}
 
-#check if exists Network
-if [ $( docker network ls -q | wc -l ) -gt 0 ]; then
-  echo "Delete networks"
-  docker network rm $(docker network ls -q)
-  echo "Networks deleted!"
-  else
-  # there are no images
-  echo "There are no Networks to remove"
-fi
+sair() {
+  echo -e "\e[31mSaindo.....\e[0m"
+}
 
-echo 
+# Limpar o terminal
+clear
+
+# Perguntar ao utilizador o que é para eliminar
+echo -e "\e[31m==============================\e[0m"
+echo -e "\e[31mWhat you want to eliminate? X \e[0m"
+echo -e "\e[31m==============================\e[0m"
+echo -e "\e[1m1. Everything\e[0m"
+echo -e "\e[1m2. Images\e[0m"
+echo -e "\e[1m3. Volumes\e[0m"
+echo -e "\e[1m4. Networks\e[0m"
+echo -e "\e[1m5. Containers\e[0m"
+echo -e "\e[1m6. Exit\e[0m"
+echo -e "\e[31m===============\e[0m"
+
+# Ler a opção do utilizador
+read -p "Enter your choice (1-5): " choice
+
+# Executar a função correspondente à opção escolhida pelo utilizador
+case $choice in
+  1)
+    eliminar_tudo
+    ;;
+  2)
+    eliminar_images
+    ;;
+  3)
+    eliminar_volumes
+    ;;
+  4)
+    eliminar_networks
+    ;;
+  5)
+    eliminar_containers
+    ;;
+  6)
+    sair
+    ;;
+  *)
+    echo "Invalid choice. Exiting..."
+    ;;
+esac
+
 echo
-echo "Done!"
+echo -e "\e[31m===============\e[0m"
+echo -e "\e[31mDone!\e[0m"
